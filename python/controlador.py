@@ -20,7 +20,7 @@ def execCodigo():
 
 def evaluaCodigo():
     print('resultado en comprueba',resultCode)
-    if resultCode == '4\n':
+    if resultCode == '4\n':                 #print devulelve el salto de linea por defecto 
         print('Resultado correcto')
     else:
         print('Resultado incorrecto')
