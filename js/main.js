@@ -1,25 +1,25 @@
 
-var strCode = "Prueba";
+/* var strCode = "Prueba";
 
 function getStringCodeFromHTML(){
     strCode = document.getElementById("codeTextarea1").value;
     console.log(strCode);
-}
+} */
 
 /* function pruebaDeGlobales(){
     console.log(strCode);
 } */
 
-function getstrCode(){
+/* function getstrCode(){
     return strCode;
 }
 
 const element = document.getElementById("buttonRun");
 element.addEventListener("click", function(){
     getStringCodeFromHTML()
-    //pruebaDeGlobales()
+    pruebaDeGlobales()
  });
 
-console.log(strCode);
+console.log(strCode); */
 
 //alert("Prueba desde js")

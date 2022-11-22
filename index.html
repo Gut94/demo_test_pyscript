@@ -25,17 +25,20 @@
     </div>
 
     <div class="row justify-content-center my-5">
-        <div class="col-lg-6">  
+        <div class="col-lg-4">  
             <label for="codeTextarea1">Introduce código</label>
-            <textarea class="form-control" id="codeTextarea1" rows="7" spellcheck="false">
-x=
-            </textarea>
+            <textarea class="form-control" id="codeTextarea1" rows="14" spellcheck="false">
+x=</textarea>
+        </div>
+        <div class="col-lg-4">  
+            <label for="resultadoTextarea1">Resultado</label>
+            <textarea class="form-control" id="resultadoTextarea1" rows="14" spellcheck="false"></textarea>
         </div>
     </div>
     <div class="text-center">
         <button type="button" class="btn btn-success" id="buttonRun">Run</button>
     </div>
-    
+    <div id="Prueba"> </p>
 
     <script src="js/main.js"></script>
     <py-script src="python/controlador.py"></py-script> <!-- No funciona debido a CORS policy, usar Live Server o escribir el código en el HTML(mejor no)-->
