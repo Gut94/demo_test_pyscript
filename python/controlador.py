@@ -9,25 +9,23 @@ resultCode = 0
 def execCodigo():
     global resultCode
     stringCode = getstrCode()
-    tmp = sys.stdout
-    my_result = StringIO()
-    sys.stdout = my_result
-    exec(stringCode)
-    sys.stdout = tmp
-    resultCode = my_result.getvalue()
-    print('VARIABLE:', my_result.getvalue())
+    stringCodeMod='global x\n'+stringCode   #pyodide necesita declarar global la variable que usamos?
+    exec(stringCodeMod)
+    resultCode = x                          #sacamos la variable que queremos del codigo pasado a exec
+    print('x',resultCode)
     
 
 def evaluaCodigo():
-    print('resultado en comprueba',resultCode)
-    if resultCode == '4\n':                 #print devulelve el salto de linea por defecto 
-        print('Resultado correcto')
+    print('resultado a comprobar',resultCode)
+    if condicionesNecesarias(resultCode):              
+        print('Resultado correcto')         #print devulelve el salto de linea por defecto 
     else:
         print('Resultado incorrecto')
 
+def condicionesNecesarias(resultCode):      #comprobamos tipo y resultado
+    return ((type(resultCode) is int) and (resultCode == 4))
 
 def button_click(event):                    #crear antes de create_proxy
- #alert(f"Prueba desde {getstrCode()}")
  execCodigo()
  evaluaCodigo()
 
