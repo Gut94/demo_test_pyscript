@@ -1,3 +1,4 @@
 #codeTextarea1, #resultadoTextarea1{
     font-family: 'Roboto Mono', monospace;
+    resize: none;
 }

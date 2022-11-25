@@ -40,8 +40,10 @@ def button_click(event):                    #crear antes de create_proxy
     print('resultado a comprobar',resultCode)
     if resultadoBool:              
         print('Resultado correcto')         #print devulelve el salto de linea por defecto 
+        document.getElementById("resultadoTextarea1").style.backgroundColor = "#90EE90"     #green
     else:
         print('Resultado incorrecto')
+        document.getElementById("resultadoTextarea1").style.backgroundColor = "#ffcccb"     #red
 
     
 
