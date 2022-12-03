@@ -15,7 +15,7 @@ def execCodigo():
     stringCodeMod='global x\n'+stringCode   #pyodide necesita declarar global la variable que usamos?
     exec(stringCodeMod)
     resultCode = x                          #variable a sacar del codigo pasado a exec
-    print('x',resultCode)
+    console.log('x',resultCode)
     
 
 
@@ -34,21 +34,26 @@ def condicion2():                           #comprueba resultado
 
 
 def imprimePorHTML():
-    print('hola')
+    console.log('hola')
     resultadoTextArea1 = document.getElementById("resultadoTextarea1")
     #resultadoTextArea1.select()
-    resultadoTextArea1.innerHTML = resultCode
+    resultadoTextArea1.value = resultCode
     condicionesBool = evaluaCodigo()
-    print('resultado a comprobar',resultCode)
-    if condicionesBool:              
-        print('Resultado correcto')         #print devulelve el salto de linea por defecto 
+    console.log('resultado a comprobar',resultCode)
+    if condicionesBool:                             #print() falla de momento https://github.com/pyscript/pyscript/issues/230 https://github.com/pyscript/pyscript/issues/472
+        console.log('Resultado correcto')           #print() devulelve el salto de linea por defecto, inserta directamente elementos html en modificador.py, usar console.log() de javascript
         document.getElementById("resultadoTextarea1").style.backgroundColor = "#90EE90"     #green
         document.getElementById("alertas").style.display = 'flex'
         document.getElementById("alertaCorrecto").style.display = 'block'
         document.getElementById("alertaError").style.display = 'none'
     else:
-        print('Resultado incorrecto')
+        console.log('Resultado incorrecto')
         document.getElementById("resultadoTextarea1").style.backgroundColor = "#ffcccb"     #red
+        if not condicion1() and condicion2():
+           document.getElementById("alertError").innerHTML = "Comprueba que sea un entero"
+        elif condicion1() and not condicion2():
+            document.getElementById("alertError").innerHTML = "Resultado incorrecto"
+
         document.getElementById("alertas").style.display = 'flex'
         document.getElementById("alertaCorrecto").style.display = 'none'
         document.getElementById("alertaError").style.display = 'block'

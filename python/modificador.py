@@ -10,3 +10,4 @@ stringPista = "x="
 document.getElementById("enunciadoEjercicio").innerHTML = stringEjercicio
 
 document.getElementById("codeTextarea1").innerHTML = stringPista
+
