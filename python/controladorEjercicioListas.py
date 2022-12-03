@@ -12,10 +12,10 @@ resultCode = 0
 def execCodigo():
     global resultCode
     stringCode = getstrCode()
-    stringCodeMod='global x\n'+stringCode   #pyodide necesita declarar global la variable que usamos?
+    stringCodeMod = 'global lista\n'+stringCode   #pyodide necesita declarar global la variable que usamos?
     exec(stringCodeMod)
-    resultCode = x                          #variable a sacar del codigo pasado a exec
-    console.log('x',resultCode)
+    resultCode = lista                          #variable a sacar del codigo pasado a exec
+    console.log('lista',resultCode)
     
 
 
@@ -24,11 +24,12 @@ def evaluaCodigo():                         #comprueba tipo y resultado
     return resultadoBool
 
 def condicion1():                           #comprueba tipo
-    condicion1Bool = (type(resultCode) is int)
+    condicion1Bool = (type(resultCode) is list)
     return condicion1Bool
 
 def condicion2():                           #comprueba resultado
-    condicion2Bool = (resultCode == 4)
+    listaSolucion = [1, 2, 3, 4, 5]
+    condicion2Bool = (resultCode == listaSolucion)
     return condicion2Bool
 
 
@@ -41,7 +42,7 @@ def imprimePorHTML():
     condicionesBool = evaluaCodigo()
     console.log('resultado a comprobar',resultCode)
     if condicionesBool:                             #print() falla de momento https://github.com/pyscript/pyscript/issues/230 https://github.com/pyscript/pyscript/issues/472
-        console.log('Resultado correcto')           #print() devulelve el salto de linea por defecto, inserta directamente elementos html en modificador.py, usar console.log() de javascript, <py-terminal> puede estar activada
+        console.log('Resultado correcto')           #print() devulelve el salto de linea por defecto, inserta directamente elementos html en modificador.py, usar console.log() de javascript
         document.getElementById("resultadoTextarea1").style.backgroundColor = "#90EE90"     #green
         document.getElementById("alertas").style.display = 'flex'
         document.getElementById("alertaCorrecto").style.display = 'block'
@@ -49,8 +50,8 @@ def imprimePorHTML():
     else:
         console.log('Resultado incorrecto')
         document.getElementById("resultadoTextarea1").style.backgroundColor = "#ffcccb"     #red
-        if not condicion1() and condicion2():
-           document.getElementById("alertError").innerHTML = "Comprueba que sea un entero"
+        if not condicion1():
+           document.getElementById("alertError").innerHTML = "No se está devolviendo una lista"
         elif condicion1() and not condicion2():
             document.getElementById("alertError").innerHTML = "Resultado incorrecto"
 
