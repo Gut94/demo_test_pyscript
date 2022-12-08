@@ -19,6 +19,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </head>
 <body>
+    <py-config>
+            packages = [
+            "pandas",
+            "matplotlib"
+            ]
+    </py-config>
+
     <div class="text-center">
         <h2>PyScript</h2>
         <p class="lead">Comprueba código desde el navegador</p>
@@ -31,7 +38,7 @@
     </div>
 
     <div class="row justify-content-center mb-5">
-        <div class="col-lg-4">  
+        <div class="col-lg-6">  
             <label for="codeTextarea1">Introduce código</label>
             <textarea class="form-control" id="codeTextarea1" rows="14" spellcheck="false"></textarea>
         </div>
@@ -61,11 +68,16 @@
         <button type="button" class="btn btn-success" id="buttonRun">Run</button>
     </div>
 
+    <div class="row justify-content-center my-5 text-center" id="zonaGraficos">
+        <div class="col-sm-6 p-2 shadow ml-4 mr-4 mb-4 bg-white rounded">
+            <div id="grafico1"></div>
+        </div>
+    </div>
 
 
     <script src="js/main.js"></script>
-    <py-script src="python/modificadorEjercicioListas.py"></py-script>
-    <py-script src="python/controladorEjercicioListas.py"></py-script> <!-- No funciona debido a CORS policy, usar Live Server o escribir el código en el HTML(mejor no)-->
+    <py-script src="python/modificadorEjercicioGrafico.py"></py-script>
+    <py-script src="python/controladorEjercicioGrafico.py"></py-script> <!-- No funciona debido a CORS policy, usar Live Server o escribir el código en el HTML(mejor no)-->
     <!-- Bootstrap -->
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

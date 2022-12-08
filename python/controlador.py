@@ -12,8 +12,8 @@ resultCode = 0
 def execCodigo():
     global resultCode
     stringCode = getstrCode()
-    stringCodeMod='global x\n'+stringCode   #pyodide necesita declarar global la variable que usamos?
-    exec(stringCodeMod)
+    stringCodeMod=stringCode                #pyodide necesita declarar global la variable que usamos? 'global x\n'+stringCode
+    exec(stringCodeMod, globals())          #es exec quien necesita añadir las globales
     resultCode = x                          #variable a sacar del codigo pasado a exec
     console.log('x',resultCode)
     
@@ -40,8 +40,8 @@ def imprimePorHTML():
     resultadoTextArea1.value = resultCode
     condicionesBool = evaluaCodigo()
     console.log('resultado a comprobar',resultCode)
-    if condicionesBool:                             #print() falla de momento https://github.com/pyscript/pyscript/issues/230 https://github.com/pyscript/pyscript/issues/472
-        console.log('Resultado correcto')           #print() devulelve el salto de linea por defecto, inserta directamente elementos html en modificador.py, usar console.log() de javascript, <py-terminal> puede estar activada
+    if condicionesBool:                             #print() falla de momento https://github.com/pyscript/pyscript/issues/230 https://github.com/pyscript/pyscript/issues/472 , <py-terminal> puede estar activada
+        console.log('Resultado correcto')           #print() devulelve el salto de linea por defecto, inserta directamente elementos html en modificador.py, usar console.log() de javascript
         document.getElementById("resultadoTextarea1").style.backgroundColor = "#90EE90"     #green
         document.getElementById("alertas").style.display = 'flex'
         document.getElementById("alertaCorrecto").style.display = 'block'

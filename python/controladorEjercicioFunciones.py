@@ -6,15 +6,18 @@ import time
 import sys
 
 resultCode = 0
+#lista = 0
 
 
 
 def execCodigo():
     global resultCode
     stringCode = getstrCode()
-    stringCodeMod = 'global lista\n'+stringCode   #pyodide necesita declarar global la variable que usamos?
-    exec(stringCodeMod)
-    resultCode = lista                          #variable a sacar del codigo pasado a exec
+    stringCodeMod = stringCode   
+    exec(stringCodeMod, globals())
+    resultCode = lista                            #variable a sacar del codigo pasado a exec
+    listaMod = ordenaLista(resultCode)            #función a comprobar
+    resultCode = listaMod                         #variable modificada con la funcion pasada a exec
     console.log('lista',resultCode)
     
 
