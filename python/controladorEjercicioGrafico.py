@@ -85,21 +85,29 @@ def imprimePorHTML():
 
     else:
         console.log('Excepcion true')
+        document.getElementById("resultadoTextarea1").style.backgroundColor = "#ffcccb"     #red
         document.getElementById("alertError").innerHTML = "Código incompleto o nombre de las variables incorrecto"
         document.getElementById("alertas").style.display = 'flex'
         document.getElementById("alertaCorrecto").style.display = 'none'
         document.getElementById("alertaError").style.display = 'block'
         document.getElementById("zonaGraficos").style.display = 'none'
 
+def reseteaVariables():
+    global fig
+    try:
+        del fig                     #borra el resultado anterior cada vez que ejecuto el botón (solo fig de momento)
+    except:
+        console.log("Variable no iniciada")
+
 
 def getstrCode():
     return document.getElementById("codeTextarea1").value
 
 
-def button_click(event):                    #crear antes de create_proxy
+def button_click(event):            #crear antes de create_proxy
     execCodigo()
     imprimePorHTML()
-    
+    reseteaVariables()
 
 
 click_proxy = create_proxy(button_click)
