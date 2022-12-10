@@ -5,7 +5,7 @@ import time
 import sys
 
 stringEjercicio = "Ejercicio: Devuelve la siguiente lista ordenada de menor a mayor [3, 4, 2, 1, 5]"
-stringPista = "lista = [3, 4, 2, 1, 5]"
+stringPista = "lista = [3, 4, 2, 1, 5]\n"
 
 document.getElementById("enunciadoEjercicio").innerHTML = stringEjercicio
 

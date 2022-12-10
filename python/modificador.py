@@ -4,7 +4,7 @@ from io import StringIO
 import time
 import sys
 
-stringEjercicio = "Ejercicio: Devuelve un entero igual a 4"
+stringEjercicio = "Ejercicio: Escribe una suma que devuelva un entero igual a 4"
 stringPista = "x="
 
 document.getElementById("enunciadoEjercicio").innerHTML = stringEjercicio

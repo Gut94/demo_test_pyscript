@@ -22,6 +22,7 @@ def execCodigo():
     exec(stringCodeMod, globals())          #es exec quien necesita añadir las globales
     try:
         resultCode = df                         #variable a sacar del codigo pasado a exec
+        #display(fig, target="grafico1")
         pyscript.write("grafico1",fig)          #https://towardsdatascience.com/create-an-interactive-web-app-with-pyscript-and-pandas-3918ad2dada1 obsoleto pronto
         excepcionFlag = False
     except:
@@ -49,7 +50,22 @@ def condicion2():                           #comprueba resultado y tipo
     condicion2Bool = (dfComprobacion.equals(resultCode))
     return condicion2Bool
 
+def resultadoCorrectoHTML():
+    document.getElementById("resultadoTextarea1").style.backgroundColor = "#90EE90"     #green
+    document.getElementById("alertas").style.display = 'flex'
+    document.getElementById("alertaCorrecto").style.display = 'block'
+    document.getElementById("alertaError").style.display = 'none'
+    document.getElementById("zonaGraficos").style.display = 'flex'
 
+def resultadoIncorrectoHTML():
+    document.getElementById("resultadoTextarea1").style.backgroundColor = "#ffcccb"     #red
+    document.getElementById("alertas").style.display = 'flex'
+    document.getElementById("alertaCorrecto").style.display = 'none'
+    document.getElementById("alertaError").style.display = 'block'
+    document.getElementById("zonaGraficos").style.display = 'none'
+
+def mensajeAlertaErrorHTML(strAlerta):
+    document.getElementById("alertError").innerHTML = strAlerta
 
 def imprimePorHTML():
     console.log('hola')
@@ -61,36 +77,24 @@ def imprimePorHTML():
 
     if not excepcionFlag:
         console.log('Excepcion false')
-        if condicionesBool:                             #print() falla de momento https://github.com/pyscript/pyscript/issues/230 https://github.com/pyscript/pyscript/issues/472
+        if condicionesBool:
+            #print('Resultado correcto')                #print() falla de momento https://github.com/pyscript/pyscript/issues/230 https://github.com/pyscript/pyscript/issues/472
             console.log('Resultado correcto')           #print() devulelve el salto de linea por defecto, inserta directamente elementos html en modificador.py, usar console.log() de javascript
-            document.getElementById("resultadoTextarea1").style.backgroundColor = "#90EE90"     #green
-            document.getElementById("alertas").style.display = 'flex'
-            document.getElementById("alertaCorrecto").style.display = 'block'
-            document.getElementById("alertaError").style.display = 'none'
-            document.getElementById("zonaGraficos").style.display = 'flex'
-            #display(fig1, target="grafico1")
-
+            resultadoCorrectoHTML()    
+            
         else:
             console.log('Resultado incorrecto')
-            document.getElementById("resultadoTextarea1").style.backgroundColor = "#ffcccb"     #red
             if not condicion1() and condicion2():
-                document.getElementById("alertError").innerHTML = "Comprueba que sea un dataframe"
+                mensajeAlertaErrorHTML("Comprueba que sea un dataframe")
             elif condicion1() and not condicion2():
-                document.getElementById("alertError").innerHTML = "Resultado incorrecto"
-
-            document.getElementById("alertas").style.display = 'flex'
-            document.getElementById("alertaCorrecto").style.display = 'none'
-            document.getElementById("alertaError").style.display = 'block'
-            document.getElementById("zonaGraficos").style.display = 'none'
+                mensajeAlertaErrorHTML("Resultado incorrecto") 
+            resultadoIncorrectoHTML()
 
     else:
         console.log('Excepcion true')
-        document.getElementById("resultadoTextarea1").style.backgroundColor = "#ffcccb"     #red
-        document.getElementById("alertError").innerHTML = "Código incompleto o nombre de las variables incorrecto"
-        document.getElementById("alertas").style.display = 'flex'
-        document.getElementById("alertaCorrecto").style.display = 'none'
-        document.getElementById("alertaError").style.display = 'block'
-        document.getElementById("zonaGraficos").style.display = 'none'
+        mensajeAlertaErrorHTML("Código incompleto o nombre de las variables incorrecto")
+        resultadoIncorrectoHTML()
+
 
 def reseteaVariables():
     global fig
