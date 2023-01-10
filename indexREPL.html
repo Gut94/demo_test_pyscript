@@ -42,53 +42,11 @@
         <p class="lead">Comprueba código desde el navegador</p>
     </div>
 
-    <div class="row justify-content-center my-2">
-        <div class="col-lg-8">
-            <p id="enunciadoEjercicio"></p>
-        </div>
-    </div>
+    <py-repl id="my-repl" auto-generate="true"> </py-repl>
 
-    <div class="row justify-content-center mb-5">
-        <div class="col-lg-4">  
-            <label for="codeTextarea1">Introduce código</label>
-            <textarea class="form-control" id="codeTextarea1" rows="14" spellcheck="false"></textarea>
-        </div>
-        <div class="col-lg-4">  
-            <label for="resultadoTextarea1">Resultado</label>
-            <textarea class="form-control" id="resultadoTextarea1" rows="14" spellcheck="false"></textarea>
-        </div>
-    </div>
-
-    <div class="row justify-content-center my-5 text-center" id="alertas">
-        <div class="col-lg-8" id="alertaCorrecto">
-            <div class="alert alert-success" role="alert">
-                Resultado correcto
-            </div>
-        </div>
-        
-        <div class="col-lg-8" id="alertaError">
-            <div class="alert alert-danger" role="alert" id="alertError">
-                Resultado incorrecto
-            </div>
-        </div>
-    </div>
     
-   
-
-    <div class="text-center">
-        <button type="button" class="btn btn-success" id="buttonRun">Run</button>
-    </div>
-
-    <div class="row justify-content-center my-5 text-center" id="zonaGraficos">
-        <div class="col-lg-6 p-2 shadow ml-4 mr-4 mb-4 bg-white rounded">
-            <div id="grafico1"></div>
-        </div>
-    </div>
-
-
-    <script src="js/main.js"></script>
-    <py-script src="python/modificadorEjercicioGrafico.py"></py-script>
-    <py-script src="python/controladorEjercicioGrafico.py"></py-script> <!-- No funciona debido a CORS policy, usar Live Server o escribir el código en el HTML(mejor no)-->
+    <py-script></py-script>
+    <!-- No funciona debido a CORS policy, usar Live Server o escribir el código en el HTML(mejor no)-->
     <!-- Bootstrap -->
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

@@ -19,15 +19,16 @@ def execCodigo():
     global excepcionFlag
     stringCode = getstrCode()
     stringCodeMod=stringCode                #pyodide necesita declarar global la variable que usamos? 'global x\n'+stringCode
-    exec(stringCodeMod, globals())          #es exec quien necesita añadir las globales
+    
     try:
+        exec(stringCodeMod, globals())          #es exec quien necesita añadir las globales
         resultCode = df                         #variable a sacar del codigo pasado a exec
         #display(fig, target="grafico1")
         pyscript.write("grafico1",fig)          #https://towardsdatascience.com/create-an-interactive-web-app-with-pyscript-and-pandas-3918ad2dada1 obsoleto pronto
         excepcionFlag = False
     except:
         excepcionFlag = True
-    console.log('df',resultCode)
+    js.console.log('df',resultCode)
     
 
 
@@ -68,22 +69,22 @@ def mensajeAlertaErrorHTML(strAlerta):
     document.getElementById("alertError").innerHTML = strAlerta
 
 def imprimePorHTML():
-    console.log('hola')
+    js.console.log('hola')
     resultadoTextArea1 = document.getElementById("resultadoTextarea1")
     #resultadoTextArea1.select()
     resultadoTextArea1.value = resultCode
     condicionesBool = evaluaCodigo()
-    console.log('resultado a comprobar',resultCode)
+    js.console.log('resultado a comprobar',resultCode)
 
     if not excepcionFlag:
-        console.log('Excepcion false')
+        js.console.log('Excepcion false')
         if condicionesBool:
             #print('Resultado correcto')                #print() falla de momento https://github.com/pyscript/pyscript/issues/230 https://github.com/pyscript/pyscript/issues/472
-            console.log('Resultado correcto')           #print() devulelve el salto de linea por defecto, inserta directamente elementos html en modificador.py, usar console.log() de javascript
+            js.console.log('Resultado correcto')           #print() devulelve el salto de linea por defecto, inserta directamente elementos html en modificador.py, usar js.console.log() de javascript
             resultadoCorrectoHTML()    
             
         else:
-            console.log('Resultado incorrecto')
+            js.console.log('Resultado incorrecto')
             if not condicion1() and condicion2():
                 mensajeAlertaErrorHTML("Comprueba que sea un dataframe")
             elif condicion1() and not condicion2():
@@ -91,7 +92,7 @@ def imprimePorHTML():
             resultadoIncorrectoHTML()
 
     else:
-        console.log('Excepcion true')
+        js.console.log('Excepcion true')
         mensajeAlertaErrorHTML("Código incompleto o nombre de las variables incorrecto")
         resultadoIncorrectoHTML()
 
@@ -101,7 +102,7 @@ def reseteaVariables():
     try:
         del fig                     #borra el resultado anterior cada vez que ejecuto el botón (solo fig de momento)
     except:
-        console.log("Variable no iniciada")
+        js.console.log("Variable no iniciada")
 
 
 def getstrCode():
