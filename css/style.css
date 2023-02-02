@@ -1,8 +1,8 @@
-#codeTextarea1, #resultadoTextarea1{
+#codeTextarea1, #resultadoTextarea1, #resultadoTextareaEx, #codeTextareaEx{
     font-family: 'Roboto Mono', monospace;
     resize: none;
 }
 
-#alertas, #alertaCorrecto, #alertaError, #zonaGraficos{
+#alertas, #alertaCorrecto, #alertaError, #zonaGraficos, #resultadoTextareaExDiv, #buttonSection2, #inputSection1{
     display: none;
 }
