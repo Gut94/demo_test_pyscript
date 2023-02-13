@@ -6,3 +6,10 @@
 #alertas, #alertaCorrecto, #alertaError, #zonaGraficos, #resultadoTextareaExDiv, #buttonSection2, #inputSection1{
     display: none;
 }
+
+input { 
+    text-align: right;
+    width: fit-content;
+    min-width: 20px;
+    font-size: 20px;
+}
