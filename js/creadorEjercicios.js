@@ -1,12 +1,31 @@
-
+var clickedButtonCount = 0;
+var strCode = '';
+var resultadoTextAreaEx = document.getElementById("resultadoTextareaEx");
 
 function getStringCodeFromHTML(){
     strCode = document.getElementById("codeTextareaEx").value;
     console.log(strCode);
 }
 
+function clickedButtonPlus(){
+    if (clickedButtonCount<5){
+        clickedButtonCount++;
+    }
+    
+}
+
+function clickedButtonMinus(){
+    if (clickedButtonCount>0){
+        clickedButtonCount--;
+    }
+}
+
+
+function showEnd(){
+    document.getElementById("buttonModify").style.display = 'none';
+}
+
 function showText(){
-    resultadoTextAreaEx = document.getElementById("resultadoTextareaEx");
     resultadoTextAreaEx.innerHTML = strCode;
     document.getElementById("codeTextareaExDiv").style.display = 'none';
     document.getElementById("resultadoTextareaExDiv").style.display = 'flex';
@@ -16,28 +35,45 @@ function showText(){
     
 }
 
+function showNext(){
+    document.getElementById("buttonFinish").style.display = 'inline';
+    document.getElementById("buttonModify").innerHTML = "Seguir Modificando"
+    
+    
+}
+
 function showPrevious(){
+    if (clickedButtonCount<2){
+        document.getElementById("buttonModify").innerHTML = "Modificar";
+    }
+    if (clickedButtonCount<5){
+        document.getElementById("buttonModify").style.display = 'inline';
+    }
+}
+
+function showStart(){
     document.getElementById("codeTextareaExDiv").style.display = 'flex';
     document.getElementById("resultadoTextareaExDiv").style.display = 'none';
     document.getElementById("buttonSection1").style.display = 'block';
     document.getElementById("inputSection1").style.display = 'none';
     document.getElementById("buttonSection2").style.display = 'none';
+    document.getElementById("buttonModify").innerHTML = "Modificar";
 
 }
 
 function createNewInputID(id){
     //strInputID = `string text ${expression} string text`;
-    strInputID = `<input type="text" id=${id}></input>`;
+    var strInputID = `<input type="text" id=${id}>`;
     return strInputID;
 }
 
 function modifyStrCode(){
-    strKey = document.getElementById("deleteInput").value;
+    var strKey = document.getElementById("deleteInput").value;
     console.log(strKey);
     let regex = new RegExp(strKey, "gi");                   //Crea una expresion regular con lo pasado por input
     let count = (strCode.match(regex) || []).length;        //cuenta las ocurrencias
     console.log(strKey);
-    strCodeMod = strCode;
+    var strCodeMod = strCode;
     for (let i = 0; i < count; i++) {
         strCodeMod = strCodeMod.replace(strKey, createNewInputID(i))
     }
@@ -69,10 +105,23 @@ buttonCreate.addEventListener("click", function(event){
 
 var buttonReturn = document.getElementById("buttonReturn");
 buttonReturn.addEventListener("click", function(event){
-    showPrevious();
+    clickedButtonMinus()
+    if (clickedButtonCount==0){
+        showStart();
+    }else{
+        showPrevious();
+    }
+    console.log(clickedButtonCount);
 });
 
 var buttonReturn = document.getElementById("buttonModify");
 buttonReturn.addEventListener("click", function(event){
     modifyStrCode();
+    clickedButtonPlus()
+    if (clickedButtonCount==1){
+        showNext();
+    }else if (clickedButtonCount==5){
+        showEnd();
+    }
+    console.log(clickedButtonCount);
 });

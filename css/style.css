@@ -3,7 +3,7 @@
     resize: none;
 }
 
-#alertas, #alertaCorrecto, #alertaError, #zonaGraficos, #resultadoTextareaExDiv, #buttonSection2, #inputSection1{
+#alertas, #alertaCorrecto, #alertaError, #zonaGraficos, #resultadoTextareaExDiv, #buttonSection2, #inputSection1, #buttonFinish{
     display: none;
 }
 
