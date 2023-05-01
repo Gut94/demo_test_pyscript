@@ -1,14 +1,17 @@
-var clickedButtonCount = 0;
-var strCode = '';
-var resultadoTextAreaEx = document.getElementById("resultadoTextareaEx");
+let clickedButtonCount = 0;     //usado para conocer las distintas palabras clave a ocultar del código
+let strCode;
+let strCodeModed;
+let resultadoTextAreaEx = document.getElementById("resultadoTextareaEx");
+let stringKeysState = [];
 
 function getStringCodeFromHTML(){
     strCode = document.getElementById("codeTextareaEx").value;
+    strCodeModed = strCode;
     console.log(strCode);
 }
 
 function clickedButtonPlus(){
-    if (clickedButtonCount<5){
+    if (clickedButtonCount<6){
         clickedButtonCount++;
     }
     
@@ -45,8 +48,7 @@ function showNext(){
 function showPrevious(){
     if (clickedButtonCount<2){
         document.getElementById("buttonModify").innerHTML = "Modificar";
-    }
-    if (clickedButtonCount<5){
+    }else if (clickedButtonCount<6){
         document.getElementById("buttonModify").style.display = 'inline';
     }
 }
@@ -63,23 +65,51 @@ function showStart(){
 
 function createNewInputID(id){
     //strInputID = `string text ${expression} string text`;
-    var strInputID = `<input type="text" id=${id}>`;
+    let strInputID = `<input type="text" class="strKey${clickedButtonCount}">`;    //TODO id + clickedButtonCount para no repetir ids
     return strInputID;
 }
 
-function modifyStrCode(){
-    var strKey = document.getElementById("deleteInput").value;
+
+
+function modifyStrCodeAdd(){
+    console.log("clickedButtonCount"+clickedButtonCount);
+
+    let strKey = document.getElementById("deleteInput").value;
     console.log(strKey);
+
     let regex = new RegExp(strKey, "gi");                   //Crea una expresion regular con lo pasado por input
     let count = (strCode.match(regex) || []).length;        //cuenta las ocurrencias
     console.log(strKey);
-    var strCodeMod = strCode;
+    let strCodeMod = strCodeModed;
+
     for (let i = 0; i < count; i++) {
-        strCodeMod = strCodeMod.replace(strKey, createNewInputID(i))
+        strCodeMod = strCodeMod.replace(strKey, createNewInputID(i));
     }
-    console.log(strCodeMod);
+    strCodeModed = strCodeMod;
+    saveState(strKey,count);
     resultadoTextAreaEx.innerHTML = strCodeMod;
+    console.log(strCodeMod);
     console.log(count);
+    console.log(JSON.stringify(stringKeysState));
+}
+
+
+
+function modifyStrCodeDelete(){
+    getState();
+}
+
+function saveState(strKeyPassed,count){
+    let JSONstringKeyState = {
+        "id": clickedButtonCount,
+        "value": strKeyPassed,
+        "number": count
+    };
+    stringKeysState.push(JSONstringKeyState);
+}
+
+function getState(){
+
 }
 
 function pruebaDeGlobales(){
@@ -96,15 +126,17 @@ function pruebaDeGlobales(){
 } */
 
 
-var buttonCreate = document.getElementById("buttonCreate");
+let buttonCreate = document.getElementById("buttonCreate");
 buttonCreate.addEventListener("click", function(event){
+    clickedButtonPlus()
     getStringCodeFromHTML();
     showText();
     pruebaDeGlobales();
 });
 
-var buttonReturn = document.getElementById("buttonReturn");
+let buttonReturn = document.getElementById("buttonReturn");
 buttonReturn.addEventListener("click", function(event){
+    modifyStrCodeDelete();
     clickedButtonMinus()
     if (clickedButtonCount==0){
         showStart();
@@ -114,14 +146,14 @@ buttonReturn.addEventListener("click", function(event){
     console.log(clickedButtonCount);
 });
 
-var buttonReturn = document.getElementById("buttonModify");
-buttonReturn.addEventListener("click", function(event){
-    modifyStrCode();
+let buttonModify = document.getElementById("buttonModify");
+buttonModify.addEventListener("click", function(event){
+    modifyStrCodeAdd();
     clickedButtonPlus()
-    if (clickedButtonCount==1){
+    if (clickedButtonCount==2){
         showNext();
-    }else if (clickedButtonCount==5){
+    }else if (clickedButtonCount==6){
         showEnd();
     }
-    console.log(clickedButtonCount);
+    console.log("clickedButtonCount"+clickedButtonCount);
 });
