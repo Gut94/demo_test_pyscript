@@ -1,14 +1,17 @@
 let clickedButtonCount = 0;     //usado para conocer las distintas palabras clave a ocultar del código
 let strCode;
 let strCodeModed;
+let strCodeRecovery;
 let resultadoTextAreaEx = document.getElementById("resultadoTextareaEx");
 let stringKeysState = [];
 let strCodeState = [];
+let strCodeRecoveryState = [];
 let flagDirection = true;
 
 function getStringCodeFromHTML(){
     strCode = document.getElementById("codeTextareaEx").value;
     strCodeModed = strCode;
+    strCodeRecovery = strCode;
     console.log(strCode);
 }
 
@@ -71,6 +74,12 @@ function createNewInputID(id){
     return strInputID;
 }
 
+function stringKeyRecovery(){
+    //strInputID = `string text ${expression} string text`;
+    let strKeyRecovery = `strKey${clickedButtonCount}`;    
+    return strKeyRecovery;
+}
+
 
 
 function modifyStrCodeAdd(){
@@ -79,13 +88,14 @@ function modifyStrCodeAdd(){
     let strKey = document.getElementById("deleteInput").value;
     console.log(strKey);
 
-    let regex = new RegExp("\\b"+strKey+"\\b", "gi");                   //Crea una expresion regular con lo pasado por input
+    let regex = new RegExp("\\b"+strKey+"\\b", "gi");                   //Crea una expresion regular con lo pasado por input (solo palabras completas, varias a la vez, case-insensitive)
     let count = (strCode.match(regex) || []).length;                    //cuenta las ocurrencias
     console.log(strKey);
     let strCodeMod = strCodeModed;
 
     for (let i = 0; i < count; i++) {
         strCodeMod = strCodeMod.replace(regex, createNewInputID(i));
+        strCodeRecovery = strCodeRecovery.replace(regex,  stringKeyRecovery());
     }
     strCodeModed = strCodeMod;
     saveState(strKey,count);
@@ -93,6 +103,7 @@ function modifyStrCodeAdd(){
     console.log(strCodeMod);
     console.log(count);
     console.log(JSON.stringify(stringKeysState));
+    console.log(strCodeRecovery);
 }
 
 
@@ -102,6 +113,7 @@ function modifyStrCodeDelete(){
     resultadoTextAreaEx.innerHTML = strCodeModed;
     console.log(strCodeModed);
     console.log(JSON.stringify(stringKeysState));
+    console.log(strCodeRecovery);
 }
 
 function saveState(strKeyPassed,count){
@@ -112,19 +124,24 @@ function saveState(strKeyPassed,count){
     };
     stringKeysState.push(JSONstringKeyState);
     strCodeState.push(strCodeModed);
+    strCodeRecoveryState.push(strCodeRecovery);
 }
 
 function getState(){
     
     if (clickedButtonCount==2){
         strCodeModed = strCode;
+        strCodeRecovery = strCode;
     }else{
         if (flagDirection){
             stringKeysState.pop();
+            strCodeRecoveryState.pop();
+            strCodeRecovery = strCodeRecoveryState.pop();
             strCodeState.pop();
             strCodeModed = strCodeState.pop();
         }else{
             stringKeysState.pop();
+            strCodeRecovery = strCodeRecoveryState.pop();
             strCodeModed = strCodeState.pop();
         }
         
@@ -146,6 +163,7 @@ buttonCreate.addEventListener("click", function(event){
     clickedButtonPlus()
     getStringCodeFromHTML();
     showText();
+    console.log("Create"+clickedButtonCount);
 });
 
 let buttonReturn = document.getElementById("buttonReturn");
@@ -159,6 +177,7 @@ buttonReturn.addEventListener("click", function(event){
     }
     flagDirection = false;
     console.log("clickedButtonCount"+clickedButtonCount);
+    console.log("Return"+clickedButtonCount);
 });
 
 let buttonModify = document.getElementById("buttonModify");
@@ -172,4 +191,13 @@ buttonModify.addEventListener("click", function(event){
     }
     flagDirection = true;
     console.log("clickedButtonCount"+clickedButtonCount);
+    console.log("Modify"+clickedButtonCount);
+    
+});
+
+
+let buttonFinish = document.getElementById("buttonFinish");
+buttonFinish.addEventListener("click", function(event){
+    console.log("Finish"+clickedButtonCount);
+    window.location.href="/index.html";
 });
