@@ -199,5 +199,8 @@ buttonModify.addEventListener("click", function(event){
 let buttonFinish = document.getElementById("buttonFinish");
 buttonFinish.addEventListener("click", function(event){
     console.log("Finish"+clickedButtonCount);
+    localStorage.setItem("strCodeModed", strCodeModed);
+    localStorage.setItem("strCodeRecovery", strCodeRecovery);
+    localStorage.setItem("stringKeysState", stringKeysState);
     window.location.href="/index.html";
 });
