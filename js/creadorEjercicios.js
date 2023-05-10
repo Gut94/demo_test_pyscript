@@ -157,6 +157,8 @@ function getState(){
     return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 } */
 
+/*******************************************************************************************************************************************/
+
 
 let buttonCreate = document.getElementById("buttonCreate");
 buttonCreate.addEventListener("click", function(event){
@@ -199,5 +201,69 @@ buttonModify.addEventListener("click", function(event){
 let buttonFinish = document.getElementById("buttonFinish");
 buttonFinish.addEventListener("click", function(event){
     console.log("Finish"+clickedButtonCount);
-    window.location.href="/index.html";
+    saveDB();
+    //window.location.href="/index.html";
 });
+
+/*******************************************************************************************************************************************/
+
+
+function saveDB(){
+
+    const indexedDB =
+    window.indexedDB ||
+    window.mozIndexedDB ||
+    window.webkitIndexedDB ||
+    window.msIndexedDB ||
+    window.shimIndexedDB;
+
+    // Open (or create) the database
+    const request = indexedDB.open("StrCodeDatabase", 1);
+
+    request.onerror = function (event) {
+    console.error("An error occurred with IndexedDB");
+    console.error(event);
+    };
+
+    // Create the schema on create and version upgrade
+    request.onupgradeneeded = function () {
+    const db = request.result;
+    const store = db.createObjectStore("strCode", { keyPath: "id" });
+    store.createIndex("strCode_name", ["name"], { unique: false });
+    store.createIndex("name_and_value", ["name", "value"], {
+        unique: false,
+    });
+    };
+
+    request.onsuccess = function () {
+    console.log("Database opened successfully");
+
+    const db = request.result;
+    const transaction = db.transaction("strCode", "readwrite");
+
+    const store = transaction.objectStore("strCode");
+    
+    //let strCodeRecoveryPruebas = "Prueba de String";
+    
+    // Add some data
+    store.put({ id: 1, name: "strCodeModed", value: strCodeModed });
+    store.put({ id: 2, name: "strCodeRecovery", value: strCodeRecovery });
+    store.put({ id: 3, name: "stringKeysState", value: stringKeysState });
+
+    // Query the data
+    const idQuery = store.get(1);       //tiene que conectarse en el mismo puerto
+    
+
+    idQuery.onsuccess = function () {
+        console.log("idQuery", idQuery.result);
+        let strIDB = idQuery.result.value;
+        console.log("String", strIDB);
+    };
+
+
+    transaction.oncomplete = function () {
+        db.close();
+    };
+    };
+
+}
