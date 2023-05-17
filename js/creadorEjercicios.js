@@ -9,7 +9,7 @@ let strCodeRecoveryState = [];
 let flagDirection = true;
 
 function getStringCodeFromHTML(){
-    strCode = document.getElementById("codeTextareaEx").value;
+    strCode = document.getElementById("codeTextarea1").value;
     strCodeModed = strCode;
     strCodeRecovery = strCode;
     console.log(strCode);
@@ -35,7 +35,7 @@ function showEnd(){
 
 function showText(){
     resultadoTextAreaEx.innerHTML = strCode;
-    document.getElementById("codeTextareaExDiv").style.display = 'none';
+    document.getElementById("codeTextarea1Div").style.display = 'none';
     document.getElementById("resultadoTextareaExDiv").style.display = 'flex';
     document.getElementById("buttonSection1").style.display = 'none';
     document.getElementById("inputSection1").style.display = 'flex';
@@ -59,7 +59,7 @@ function showPrevious(){
 }
 
 function showStart(){
-    document.getElementById("codeTextareaExDiv").style.display = 'flex';
+    document.getElementById("codeTextarea1Div").style.display = 'flex';
     document.getElementById("resultadoTextareaExDiv").style.display = 'none';
     document.getElementById("buttonSection1").style.display = 'block';
     document.getElementById("inputSection1").style.display = 'none';
