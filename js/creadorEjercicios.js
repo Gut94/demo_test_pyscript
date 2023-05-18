@@ -201,8 +201,13 @@ buttonModify.addEventListener("click", function(event){
 let buttonFinish = document.getElementById("buttonFinish");
 buttonFinish.addEventListener("click", function(event){
     console.log("Finish"+clickedButtonCount);
+    console.log("Finish"+strCodeModed);
+    console.log("Finish"+strCodeRecovery);
+    console.log("Finish"+JSON.stringify(stringKeysState));
     saveDB();
     window.location.href="/index.html";
+    let loc = window.location.href;
+    window.location.href = loc + '?n=' + new Date().getTime(); // random number, para evitar que la cache no lea la BBDD
 });
 
 /*******************************************************************************************************************************************/
@@ -229,7 +234,7 @@ function saveDB(){
     request.onupgradeneeded = function () {
         const db = request.result;
         const store = db.createObjectStore("strCode", { keyPath: "id" });
-        store.createIndex("strCode_name", ["name"], { unique: false });
+        store.createIndex("strCode_name", ["name"], { unique: false });     //no uso estos index de momento
         store.createIndex("name_and_value", ["name", "value"], {
             unique: false,
         });
