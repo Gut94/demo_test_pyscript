@@ -1,12 +1,12 @@
 from pyodide.ffi import create_proxy        #Go to inspect -> settings gear -> Uncheck 'enable javascript source maps' and 'enable css source map'. https://github.com/dart-lang/webdev/issues/1500
 from js import alert, document
 from io import StringIO
-#from jsToPyscript import strCodeHTML, strCodeRecovery, stringKeys_list
 import time
 import sys
 
-stringEjercicio = "Ejercicio: Escribe una suma que devuelva un entero igual a 4"
-stringPista = "x="
+stringEjercicio = "Ejercicio: Ordena y dibuja un dataframe con las siguientes columnas 'col1': [3, 1, 5], 'col2': [2, 4, 6]"
+stringPista = "#Ordenado de menor a mayor respecto a col1\n"
+
 
 document.getElementById("enunciadoEjercicio").innerHTML = stringEjercicio
 
@@ -14,12 +14,3 @@ document.getElementById("enunciadoEjercicio").innerHTML = stringEjercicio
 
 document.getElementById("showInputCode").innerHTML = strCodeHTML
 
-
-def pruebaGlobales():
-    js.console.log("prueba de globales")
-    print(dir(js))
-    print(strCodeHTML)
-    print(strCodeRecovery)
-    print(stringKeys_list)
-
-pruebaGlobales()

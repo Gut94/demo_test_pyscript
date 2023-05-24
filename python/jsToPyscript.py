@@ -4,15 +4,6 @@ import json
 strCodeHTML = js.jsGlobalStrCodeHTML
 strCodeRecovery = js.jsGlobalStrCodeRecovery
 stringKeys = js.jsGlobalStringKeys
-#print(dir(js))
-#print(strCodeHTML)
-#print(strCodeRecovery)
-#print(stringKeys)
-#from js import pruebaVar
-#import { pruebaVar } from 'desdeJS'
-#print(pruebaVar)
-
-
 
 json_array = json.loads(stringKeys)
 stringKeys_list = []
@@ -25,3 +16,10 @@ for item in json_array:
     stringKeys_list.append(store_details)
 
 #print(stringKeys_list)
+#print(dir(js))
+#print(strCodeHTML)
+#print(strCodeRecovery)
+#print(stringKeys)
+#from js import pruebaVar
+#import { pruebaVar } from 'desdeJS'
+#print(pruebaVar)

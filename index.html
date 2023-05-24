@@ -28,8 +28,10 @@
             [[fetch]]
             files =[
                 "python/jsToPyscript.py",
-                "python/modificadorPlaceholders.py",
-                "python/controladorPlaceholders.py"
+                "python/modificadorPlaceholdersEjercicioGrafico.py",
+                "python/controladorPlaceholdersEjercicioGrafico.py"
+            #    "python/modificadorPlaceholders.py",
+            #    "python/controladorPlaceholders.py"
             #    "python/modificador.py",
             #    "python/controlador.py"
             #    "python/modificadorEjercicioListas.py",
@@ -53,9 +55,13 @@
     </div>
 
     <div class="row justify-content-center mb-5">
-        <div class="col-lg-4">  
+         <!--<div class="col-lg-4">  
             <label for="codeTextarea1">Introduce código</label>
             <textarea class="form-control" id="codeTextarea1" rows="14" spellcheck="false"></textarea>
+        </div>-->
+        <div class="col-lg-4">  
+            <label for="showInputCode">Resultado</label>
+            <pre id="showInputCode"></pre>
         </div>
         <div class="col-lg-4">  
             <label for="resultadoTextarea1">Resultado</label>
@@ -91,10 +97,10 @@
 
 
     <script src="python/retrieveData.js"></script>
-    <script src="js/tabulacion.js"></script>
+    <!--<script src="js/tabulacion.js"></script>-->
     <py-script src="python/jsToPyscript.py"></py-script>
-    <py-script src="python/modificadorPlaceholders.py"></py-script>
-    <py-script src="python/controladorPlaceholders.py"></py-script> <!-- No funciona debido a CORS policy, usar Live Server o escribir el código en el HTML(mejor no)-->
+    <py-script src="python/modificadorPlaceholdersEjercicioGrafico.py"></py-script>
+    <py-script src="python/controladorPlaceholdersEjercicioGrafico.py"></py-script> <!-- No funciona debido a CORS policy, usar Live Server o escribir el código en el HTML(mejor no)-->
     <!-- Bootstrap -->
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

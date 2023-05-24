@@ -148,6 +148,23 @@ function getState(){
     }
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+async function finishAndLoad() {
+    console.log("Finish"+clickedButtonCount);
+    console.log("Finish"+strCodeModed);
+    console.log("Finish"+strCodeRecovery);
+    console.log("Finish"+JSON.stringify(stringKeysState));
+    saveDB();
+    await sleep(5000);
+    //window.location.href="/index.html";
+    //let loc = window.location.href;
+    window.location.href = "/index.html" + '?n=' + new Date().getTime(); // random number, para evitar que con la cache no se lea la BBDD
+}
+
 
 /* function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
@@ -200,14 +217,7 @@ buttonModify.addEventListener("click", function(event){
 
 let buttonFinish = document.getElementById("buttonFinish");
 buttonFinish.addEventListener("click", function(event){
-    console.log("Finish"+clickedButtonCount);
-    console.log("Finish"+strCodeModed);
-    console.log("Finish"+strCodeRecovery);
-    console.log("Finish"+JSON.stringify(stringKeysState));
-    saveDB();
-    window.location.href="/index.html";
-    let loc = window.location.href;
-    window.location.href = loc + '?n=' + new Date().getTime(); // random number, para evitar que la cache no lea la BBDD
+    finishAndLoad();
 });
 
 /*******************************************************************************************************************************************/
@@ -221,6 +231,18 @@ function saveDB(){
     window.webkitIndexedDB ||
     window.msIndexedDB ||
     window.shimIndexedDB;
+
+
+    var req = indexedDB.deleteDatabase("StrCodeDatabase");  //la BBDD dará problemas: 1)varias pestañas abiertas, 2)al retroceder pag, 3)BBDD sin usar varios dias?
+    req.onsuccess = function () {
+        console.log("Deleted database successfully");
+    };
+    req.onerror = function () {
+        console.log("Couldn't delete database");
+    };
+    req.onblocked = function () {
+        console.log("Couldn't delete database due to the operation being blocked");
+    };
 
     // Open (or create) the database
     const request = indexedDB.open("StrCodeDatabase", 1);

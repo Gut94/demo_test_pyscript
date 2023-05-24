@@ -2,66 +2,75 @@
 from pyodide.ffi import create_proxy        #Go to inspect -> settings gear -> Uncheck 'enable javascript source maps' and 'enable css source map'. https://github.com/dart-lang/webdev/issues/1500
 from js import alert, document
 from io import StringIO
-#from jsToPyscript import strCodeHTML, strCodeRecovery, stringKeys_list
 import time
 import sys
+import pandas as pd
+import matplotlib.pyplot as plt
 
 resultCode = 0
+resultFig = 0
 excepcionFlag=False
-stringCode = ""
+
 
 
 def execCodigo():
     global resultCode
-    global x
+    global fig
     global excepcionFlag
-    global stringCode
     stringCode = getstrCode()
     stringCodeMod=stringCode                #pyodide necesita declarar global la variable que usamos? 'global x\n'+stringCode
     
     try:
         exec(stringCodeMod, globals())          #es exec quien necesita añadir las globales
-        resultCode = x                         #variable a sacar del codigo pasado a exec
+        resultCode = df                         #variable a sacar del codigo pasado a exec
+        #display(fig, target="grafico1")
+        #pyscript.write("grafico1",fig)          #https://towardsdatascience.com/create-an-interactive-web-app-with-pyscript-and-pandas-3918ad2dada1 obsoleto pronto
+        Element("grafico1").write(fig)
         excepcionFlag = False
     except:
         excepcionFlag = True
-    js.console.log('x',resultCode)
+    js.console.log('df',resultCode)
     
 
 
 def evaluaCodigo():                         #comprueba tipo y resultado
-    resultadoBool = condicion1() and condicion2() and condicion3()
+    resultadoBool = condicion1() and condicion2()
     return resultadoBool
 
-def condicion1():                           #comprueba tipo
-    condicion1Bool = (type(resultCode) is int)
-    return condicion1Bool
+def condicion1():                           #comprueba tipo, en este caso seria mejor eliminar esta funcion
+    condicion1Bool = (type(resultCode) is pd.core.frame.DataFrame)
+    return condicion1Bool 
 
-def condicion2():                           #comprueba resultado
-    condicion2Bool = (resultCode == 4)
+def condicion2():                           #comprueba resultado y tipo
+    dfComprobacion = pd.DataFrame({
+        'col1': [3, 1, 5],
+        'col2': [2, 4, 6]
+        }
+)
+    dfComprobacion.sort_values('col1', inplace=True)
+
+    condicion2Bool = (dfComprobacion.equals(resultCode))
     return condicion2Bool
-
-def condicion3():                           #comprueba condiciones del codigo
-    condicion3Bool = "+" in stringCode
-    return condicion3Bool
 
 def resultadoCorrectoHTML():
     document.getElementById("resultadoTextarea1").style.backgroundColor = "#90EE90"     #green
     document.getElementById("alertas").style.display = 'flex'
     document.getElementById("alertaCorrecto").style.display = 'block'
     document.getElementById("alertaError").style.display = 'none'
+    document.getElementById("zonaGraficos").style.display = 'flex'
 
 def resultadoIncorrectoHTML():
     document.getElementById("resultadoTextarea1").style.backgroundColor = "#ffcccb"     #red
     document.getElementById("alertas").style.display = 'flex'
     document.getElementById("alertaCorrecto").style.display = 'none'
     document.getElementById("alertaError").style.display = 'block'
+    document.getElementById("zonaGraficos").style.display = 'none'
 
 def mensajeAlertaErrorHTML(strAlerta):
     document.getElementById("alertError").innerHTML = strAlerta
 
 def imprimePorHTML():
-    js.console.log('imprimePorHTML')
+    js.console.log('hola')
     resultadoTextArea1 = document.getElementById("resultadoTextarea1")
     #resultadoTextArea1.select()
     resultadoTextArea1.value = resultCode
@@ -78,11 +87,9 @@ def imprimePorHTML():
         else:
             js.console.log('Resultado incorrecto')
             if not condicion1() and condicion2():
-                mensajeAlertaErrorHTML("Comprueba que sea un entero")
+                mensajeAlertaErrorHTML("Comprueba que sea un dataframe")
             elif condicion1() and not condicion2():
-                mensajeAlertaErrorHTML("Resultado incorrecto")
-            elif not condicion3():
-                mensajeAlertaErrorHTML("No es una suma")
+                mensajeAlertaErrorHTML("Resultado incorrecto") 
             resultadoIncorrectoHTML()
 
     else:
@@ -92,11 +99,12 @@ def imprimePorHTML():
 
 
 def reseteaVariables():
-    global x
+    global fig
     try:
-        del x                     #borra el resultado anterior cada vez que ejecuto el botón (solo fig de momento)
+        del fig                     #borra el resultado anterior cada vez que ejecuto el botón (solo fig de momento)
     except:
         js.console.log("Variable no iniciada")
+
 
 def all_equal(iterator):
     iterator = iter(iterator)
@@ -145,21 +153,11 @@ def getstrCode():
             print("No son iguales")
     
     return strCodeIter
-    #return document.getElementById("codeTextarea1").value
 
-
-def button_click(event):                    #crear antes de create_proxy
-    #js.console.log("Devuelve algo "+str(getstrCode()))
-    #codigoRecuperado = getstrCode()
-    #print(codigoRecuperado)
-    #js.console.log(listaClaseHTML)
-    #js.console.log(type(listaClaseHTML))
-    # for i in listaClaseHTML:
-    #     js.console.log("El texto del input "+i.value)
+def button_click(event):            #crear antes de create_proxy
     execCodigo()
     imprimePorHTML()
     reseteaVariables()
-    
 
 
 click_proxy = create_proxy(button_click)
