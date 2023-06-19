@@ -9,7 +9,7 @@ let strCodeRecoveryState = [];
 let flagDirection = true;
 
 function getStringCodeFromHTML(){
-    strCode = document.getElementById("codeTextareaEx").value;
+    strCode = document.getElementById("codeTextarea1").value;
     strCodeModed = strCode;
     strCodeRecovery = strCode;
     console.log(strCode);
@@ -35,7 +35,7 @@ function showEnd(){
 
 function showText(){
     resultadoTextAreaEx.innerHTML = strCode;
-    document.getElementById("codeTextareaExDiv").style.display = 'none';
+    document.getElementById("codeTextarea1Div").style.display = 'none';
     document.getElementById("resultadoTextareaExDiv").style.display = 'flex';
     document.getElementById("buttonSection1").style.display = 'none';
     document.getElementById("inputSection1").style.display = 'flex';
@@ -59,7 +59,7 @@ function showPrevious(){
 }
 
 function showStart(){
-    document.getElementById("codeTextareaExDiv").style.display = 'flex';
+    document.getElementById("codeTextarea1Div").style.display = 'flex';
     document.getElementById("resultadoTextareaExDiv").style.display = 'none';
     document.getElementById("buttonSection1").style.display = 'block';
     document.getElementById("inputSection1").style.display = 'none';
@@ -148,6 +148,23 @@ function getState(){
     }
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+async function finishAndLoad() {
+    console.log("Finish"+clickedButtonCount);
+    console.log("Finish"+strCodeModed);
+    console.log("Finish"+strCodeRecovery);
+    console.log("Finish"+JSON.stringify(stringKeysState));
+    saveDB();
+    await sleep(5000);
+    //window.location.href="/index.html";
+    //let loc = window.location.href;
+    window.location.href = "/index.html" + '?n=' + new Date().getTime(); // random number, para evitar que con la cache no se lea la BBDD
+}
+
 
 /* function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
@@ -200,9 +217,7 @@ buttonModify.addEventListener("click", function(event){
 
 let buttonFinish = document.getElementById("buttonFinish");
 buttonFinish.addEventListener("click", function(event){
-    console.log("Finish"+clickedButtonCount);
-    saveDB();
-    //window.location.href="/index.html";
+    finishAndLoad();
 });
 
 /*******************************************************************************************************************************************/
@@ -217,53 +232,65 @@ function saveDB(){
     window.msIndexedDB ||
     window.shimIndexedDB;
 
+
+    var req = indexedDB.deleteDatabase("StrCodeDatabase");  //la BBDD dará problemas: 1)varias pestañas abiertas, 2)al retroceder pag, 3)BBDD sin usar varios dias?
+    req.onsuccess = function () {
+        console.log("Deleted database successfully");
+    };
+    req.onerror = function () {
+        console.log("Couldn't delete database");
+    };
+    req.onblocked = function () {
+        console.log("Couldn't delete database due to the operation being blocked");
+    };
+
     // Open (or create) the database
     const request = indexedDB.open("StrCodeDatabase", 1);
 
     request.onerror = function (event) {
-    console.error("An error occurred with IndexedDB");
-    console.error(event);
+        console.error("An error occurred with IndexedDB");
+        console.error(event);
     };
 
     // Create the schema on create and version upgrade
     request.onupgradeneeded = function () {
-    const db = request.result;
-    const store = db.createObjectStore("strCode", { keyPath: "id" });
-    store.createIndex("strCode_name", ["name"], { unique: false });
-    store.createIndex("name_and_value", ["name", "value"], {
-        unique: false,
-    });
+        const db = request.result;
+        const store = db.createObjectStore("strCode", { keyPath: "id" });
+        store.createIndex("strCode_name", ["name"], { unique: false });     //no uso estos index de momento
+        store.createIndex("name_and_value", ["name", "value"], {
+            unique: false,
+        });
     };
 
     request.onsuccess = function () {
-    console.log("Database opened successfully");
+        console.log("Database opened successfully");
 
-    const db = request.result;
-    const transaction = db.transaction("strCode", "readwrite");
+        const db = request.result;
+        const transaction = db.transaction("strCode", "readwrite");
 
-    const store = transaction.objectStore("strCode");
-    
-    //let strCodeRecoveryPruebas = "Prueba de String";
-    
-    // Add some data
-    store.put({ id: 1, name: "strCodeModed", value: strCodeModed });
-    store.put({ id: 2, name: "strCodeRecovery", value: strCodeRecovery });
-    store.put({ id: 3, name: "stringKeysState", value: stringKeysState });
+        const store = transaction.objectStore("strCode");
+        
+        //let strCodeRecoveryPruebas = "Prueba de String";
+        
+        // Add some data
+        store.put({ id: 1, name: "strCodeModed", value: strCodeModed });
+        store.put({ id: 2, name: "strCodeRecovery", value: strCodeRecovery });
+        store.put({ id: 3, name: "stringKeysState", value: stringKeysState });
 
-    // Query the data
-    const idQuery = store.get(1);       //tiene que conectarse en el mismo puerto
-    
+        // Query the data
+        const idQuery = store.get(1);       //tiene que conectarse en el mismo puerto
+        
 
-    idQuery.onsuccess = function () {
-        console.log("idQuery", idQuery.result);
-        let strIDB = idQuery.result.value;
-        console.log("String", strIDB);
-    };
+        idQuery.onsuccess = function () {
+            console.log("idQuery", idQuery.result);
+            let strIDB = idQuery.result.value;
+            console.log("String", strIDB);
+        };
 
 
-    transaction.oncomplete = function () {
-        db.close();
-    };
+        transaction.oncomplete = function () {
+            db.close();
+        };
     };
 
 }
